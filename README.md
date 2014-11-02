@@ -1,6 +1,6 @@
 Sistemas y Tecnologías Web
 =========
-Práctica 4 SYTW: Acortador de URLs
+Práctica 5 SYTW: Estadísticas de Visitas al Acortador de URLs
 ---------
 Autores: Rushil Lakhani Lakhani & Adán Rafael López Lecuona.
 
@@ -13,15 +13,17 @@ Autores: Rushil Lakhani Lakhani & Adán Rafael López Lecuona.
 
 2. Descargamos Data_mapper con sqlite3 para el almacenamiento en la B.D:
   * [Repositorio de GitHub](https://github.com/XandoBit/practica4)
-3. Desarrollamos la app para almacenar las urls a cada usuario junto a la corta y email.
-4. Desarrollamos el diseño de la app.
-5. Subimos la App a Heroku:
+3. Desarrollamos la app.
+4. Desarrollamos los tests.
+5. Desarrollamos el diseño de la app.
+6. Subimos la App a Heroku:
   * [App en Heroku](https://cortaurl.herokuapp.com)
 
   
  
-Static Page de la práctica 4:
+Static Page de la práctica 5:
   * [Ir a static page de Github](http://xandobit.github.io/webpageSYTW.github.io/) 
+
 
 
 Recursos A Usar
