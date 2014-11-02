@@ -36,3 +36,8 @@ task :logs, :appname  do
   sh "heroku apps:destroy #{name}"
 end
 
+desc "Ejecutar las pruebas unitarias"
+task :test do
+  sh "ruby ./test/test.rb"
+end
+
