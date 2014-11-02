@@ -8,3 +8,13 @@ class ShortenedUrl
  
 end
 
+class ShortenedUrl
+  include DataMapper::Resource
+
+  property :id, Serial
+  property :short, Text
+  property :url, Text
+
+  has n, :visits
+end
+
