@@ -32,7 +32,7 @@ DataMapper.auto_upgrade! # No borra información , actualiza.
 
 #Variable global
 Base = 36 
-$email = ""
+#$email = ""
 
 #Control del OmniAuth
 use OmniAuth::Builder do       
@@ -44,17 +44,30 @@ enable :sessions
 set :session_secret, '*&(^#234a)'
 
 
+
+
 get '/' do
-    @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20,:usuario => $email)
-  haml :index
+	puts "inside get '/': #{params}"
+	session[:email] = " "
+	@list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => " ")  #listar url generales,las que no estan identificadas         
+	haml :index
 end
 
-#Cuando es redirigido de Omniauth
+
+
 get '/auth/:name/callback' do
-    @auth = request.env['omniauth.auth']
-    $email = @auth['info'].email
-    @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => $email)
-  haml :index
+        session[:auth] = @auth = request.env['omniauth.auth']
+	session[:email] = @auth['info'].email
+        if session[:auth] then  #@auth
+        begin
+                puts "inside get '/': #{params}"
+                @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => session[:email])   #listar url del usuario  
+                haml :index
+        end
+        else
+                redirect '/exit'
+        end
+
 end
 
 get '/exit' do
@@ -63,14 +76,16 @@ get '/exit' do
   redirect '/'
 end
 
+
+
 post '/' do
   uri = URI::parse(params[:url])
   if uri.is_a? URI::HTTP or uri.is_a? URI::HTTPS then
     begin
       if params[:url_opc] == ""
-        @short_url = ShortenedUrl.first_or_create(:url => params[:url], :url_opc => params[:url_opc], :usuario => $email)
+        @short_url = ShortenedUrl.first_or_create(:url => params[:url], :url_opc => params[:url_opc], :usuario => session[:email])
       else
-        @short_url_opc = ShortenedUrl.first_or_create(:url => params[:url], :url_opc => params[:url_opc], :usuario => $email)
+        @short_url_opc = ShortenedUrl.first_or_create(:url => params[:url], :url_opc => params[:url_opc], :usuario => session[:email])
       end
     rescue Exception => e
       puts "EXCEPTION!"
@@ -83,8 +98,10 @@ post '/' do
   redirect '/'
 end
 
+
+
 get '/:shortened' do
-  short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base), :usuario => $email)
+  short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base), :usuario => session[:email])
   short_url_opc = ShortenedUrl.first(:url_opc => params[:shortened])
 
   if short_url_opc  #Si tiene información, entonces devolvera la url corta
@@ -93,6 +110,8 @@ get '/:shortened' do
     redirect short_url.url, 301
   end
 end
+
+
 
 
 error do haml :index end
