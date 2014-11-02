@@ -1,0 +1,14 @@
+%table.table.table-hover
+  %thead
+    %tr
+      %th URL
+      %th Original
+      %th Corta
+  %tbody
+    - @list.each do |url|
+      %tr
+        %td= url.id
+        %td
+          %a{:href=>"/#{url.id.to_s(Base)}" , :target=>"_blank"} #{url.url}
+        %td 
+          %a{:href=>"/#{url.url_opc}", :target=>"_blank"} #{url.url_opc}

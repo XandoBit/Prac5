@@ -1,0 +1,49 @@
+html,body {
+  height:100%;
+  background-image:url('/img/fondo.jpg');
+  background-repeat:no-repeat;
+  background-size:1400px 610px;
+  
+}
+
+h1 {
+  font-family: fantasy;
+  font-size:60px;
+  color:black;
+}
+
+.lead {
+  background-color:#ffa805;
+  color:#ffa805;
+}
+
+/* Custom container */
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+  min-height:20%;
+  background-color:#ffa805;
+  color:white;
+  overflow:hidden;
+  border-radius: 142px 142px 142px 142px;
+  -moz-border-radius: 142px 142px 142px 142px;
+  -webkit-border-radius: 142px 142px 142px 142px;
+  border: 10px dotted #000000;
+}
+
+.container-full a {
+  background-color:#06A6FC;
+  color:#06A6FC;
+  text-decoration:none;
+}
+
+.v-center {
+  margin-top:0%;
+}
+
+.container-down {
+  margin-top:0%;
+  background-color:#ffa805;
+  color:black;
+  }
+
