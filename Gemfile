@@ -9,8 +9,19 @@ gem 'haml'
 gem 'omniauth'
 gem 'omniauth-google-oauth2'
 gem 'omniauth-oauth2' 
+gem 'omniauth-github'
+gem 'omniauth-facebook'
 gem 'pry'
 gem 'erubis'
+gem 'chartkick'
+gem 'rest-client'
+gem 'xml-simple'
+gem 'groupdate'
+
+source 'https://rubygems.org'
+
+#gem 'alphadecimal'
+
 
 
 
