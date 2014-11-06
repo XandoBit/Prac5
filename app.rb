@@ -60,7 +60,6 @@ get '/' do
         puts get_remote_ip(env)
         puts ""
         haml :index
-  en
 end
 
 
