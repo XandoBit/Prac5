@@ -92,6 +92,19 @@ get '/exit' do
   redirect '/'
 end
 
+#Get para visitar una URL corta
+
+get '/visitar/:shortened' do
+    puts "inside get '/:shortened': #{params}"
+    short_url = Shortenedurl.first(:urlshort => params[:shortened])
+    short_url.n_visits += 1
+    short_url.save
+    data = get_geo
+    visit = Visit.new(:ip => data['ip'], :country => data['countryName'], :countryCode => data['countryCode'], :city => data["city"], :latitude => data["latitude"], :longitude => data["longitude"], :shortenedurl => short_url, :created_at => Time.now)
+    visit.save
+    redirect short_url.url, 301
+end
+
 
 
 post '/' do
@@ -115,7 +128,7 @@ post '/' do
 end
 
 
-
+=begin
 get '/:shortened' do
   short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base), :usuario => session[:email])
   short_url_opc = ShortenedUrl.first(:url_opc => params[:shortened])
@@ -125,6 +138,39 @@ get '/:shortened' do
   else
     redirect short_url.url, 301
   end
+end
+=end
+
+get '/:shortened' do
+    #@peticion = request.ip
+    puts ""
+    puts "inside get '/:shortened': #{params}"
+    puts ""
+    puts "IP de la peticion #{@peticion}"
+    puts ""
+    short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base))
+    short_url_opc = ShortenedUrl.first(:url_opc => params[:shortened])
+    #visitas = Visit.first_or_create(:ip => get_remote_ip(env), :created_at => Time.now)
+    begin
+      #visitas = Visit.first_or_create(:ip => get_remote_ip(env), :created_at => Time.now)
+      visitas = Visit.new(:ip => get_remote_ip(env), :created_at => Time.now, :shortened_url => short_url)
+      visitas.save
+      rescue Exception => e
+      puts "EXCEPTION EN LA TABLA VISIT !!!!!!!!!!!!!!!!!!!"
+      pp @short_url
+      puts e.message
+     end
+    
+    if short_url_opc then 
+      redirect short_url_opc.url, 301
+    else
+      # HTTP status codes that start with 3 (such as 301, 302) tell the
+      # browser to go look for that resource in another location. This is
+      # used in the case where a web page has moved to another location or
+      # is no longer at the original location. The two most commonly used
+      # redirection status codes are 301 Move Permanently and 302 Found.
+      redirect short_url.url, 301
+    end
 end
 
 
