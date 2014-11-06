@@ -1,3 +1,4 @@
+!!!
 %html{:lang => "es"}
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "content-type"}/
@@ -10,13 +11,10 @@
     %link{:href => "/css/estilos.css", :rel => "stylesheet"}/
   %body
     .cabecera
-	  %a.button.btn.btn-danger{:href=>'/exit', :type => "button"} Salir  
+      %a.button.btn.btn-danger{:href=>'/exit', :type => "button"} Salir  
       .col-lg-11
-	    %a.button.btn.btn-danger{:href=>'/', :type => "button"} Inicio
-          %button.navbar-toggle.collapsed{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
-          %a{:alt => "GoogleOauth", :href => "/auth/google_oauth2"}
-            %img{:alt => "Sign IN Google", :src => "/img/sign-in-with-google.png", :width => "127"}/
-		%a.button.btn.btn-danger{:href=>'/grafics', :type => "button"} Graficos estadisticos
+        %a.button.btn.btn-danger{:href=>'/', :type => "button"} Inicio
+        %a.button.btn.btn-danger{:href=>'/grafics', :type => "button"} Graficos estadisticos
         %button.navbar-toggle.collapsed{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
         %a{:alt => "GoogleOauth", :href => "/auth/google_oauth2"}
           %img{:alt => "Sign IN Google", :src => "/img/sign-in-with-google.png", :width => "127"}/
