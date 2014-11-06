@@ -27,7 +27,8 @@ Static Page de la práctica 5:
 
 
 Recursos A Usar
-
+ 
+* [ChartKick](http://ankane.github.io/chartkick/)
 * [DataMapper](http://datamapper.org/getting-started.html)
 * [Haml](http://haml.info/)
 * [Sinatra](http://www.sinatrarb.com/)
