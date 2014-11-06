@@ -66,10 +66,14 @@ end
 
 get '/auth/:name/callback' do
         session[:auth] = @auth = request.env['omniauth.auth']
-	#session[:name] = @auth['info'].first_name + " " + @auth['info'].last_name
+	session[:name] = @auth['info'].first_name + " " + @auth['info'].last_name
 	session[:email] = @auth['info'].email
         if session[:auth] then  #@auth
         begin
+	        puts ""
+                puts "IP de la peticion #{request.ip}"
+                puts ""
+                puts "inside get '/': #{params}"
                 puts "inside get '/': #{params}"
                 @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => session[:email])   #listar url del usuario  
                 haml :index
@@ -140,3 +144,11 @@ def get_remote_ip(env)
     env['REMOTE_ADDR']
   end
 end
+
+def get_geo
+    xml = RestClient.get "http://freegeoip.net/xml/#{get_remote_ip(env)}"
+    data = XmlSimple.xml_in(xml.to_s)
+    {"ip" => data['Ip'][0].to_s, "countryCode" => data['CountryCode'][0].to_s, "countryName" => data['CountryName'][0].to_s, "city" => data['City'][0].to_s, "latitude" => data['Latitude'][0].to_s, "longitude" => data['Longitude'][0].to_s}
+end
+
+
