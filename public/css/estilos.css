@@ -23,7 +23,7 @@ h1 {
   margin: 0 auto;
   width: 100%;
   min-height:20%;
-  background-color:#6699FF;
+  background-color:#66CCFF;
   color:white;
   overflow:hidden;
   border-radius: 142px 142px 142px 142px;
@@ -44,7 +44,7 @@ h1 {
 
 .container-down {
   margin-top:0%;
-  background-color:#ffa805;
+  background-color:#66CCFF;
   color:black;
   }
 
