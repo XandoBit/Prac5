@@ -9,6 +9,9 @@ require 'pp'
 require 'data_mapper'
 require 'omniauth-oauth2'      
 require 'omniauth-google-oauth2'
+#require 'chartkick'
+
+%w( dm-core dm-timestamps dm-types restclient xmlsimple).each  { |lib| require lib}
 
 
 configure :development, :test do
