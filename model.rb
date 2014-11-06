@@ -26,10 +26,17 @@ class Visit
   property  :ip,          IPAddress
   property  :created_at,  DateTime
   property  :country,     String
+  property :countryCode, String
+  property :city, String
+  property :latitud, String
+  property :longitud, String
   #belongs_to  :link
-
+  
   belongs_to  :shortened_url
+  
+end  
 
+=begin
   before :create, :set_country
   
     def set_country
@@ -40,3 +47,5 @@ class Visit
 end
 
 #end
+
+=end
