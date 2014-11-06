@@ -1,3 +1,4 @@
+!!!
 %html{:lang => "es"}
   %head
     %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "content-type"}/
@@ -13,9 +14,6 @@
 	  %a.button.btn.btn-danger{:href=>'/exit', :type => "button"} Salir  
       .col-lg-11
 	    %a.button.btn.btn-danger{:href=>'/', :type => "button"} Inicio
-          %button.navbar-toggle.collapsed{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
-          %a{:alt => "GoogleOauth", :href => "/auth/google_oauth2"}
-            %img{:alt => "Sign IN Google", :src => "/img/sign-in-with-google.png", :width => "127"}/
 		%a.button.btn.btn-danger{:href=>'/grafics', :type => "button"} Graficos estadisticos
         %button.navbar-toggle.collapsed{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
         %a{:alt => "GoogleOauth", :href => "/auth/google_oauth2"}
@@ -24,16 +22,16 @@
       .row
         .col-lg-12.text-center.v-center
           %img{:alt => "Acortador URLs", :src => "/img/http.jpg", :width => "800", :height => "150"}/
-          %h1 Acortador de URLs
+          %h1 Estadisticas del acortador de URLs
           %br/
           %br/
           %br/
           %form.form-inline{:action => "/", :method => "post"}
             .form-group{:style => "text-align:center;margin:0 auto;"}
               %label(for="url")
-              %input.form-control.input-lg{:autofocus => "", :name => "url", :placeholder => "Introduce la URL aqu√≠", :size => "50", :type => "text", :value => ""}/
-              %input.form-control.input-lg{:name => "url_opc", :placeholder => "Introduce la abreviatura aqu√≠", :size => "30", :type => "text", :value => ""}/
-              %button.btn.btn-lg.btn-primary{:type => "submit", :value => "Submit"} CORTAR URL
+              %input.form-control.input-lg{:autofocus => "", :name => "url", :placeholder => "Introduce la URL aquÌ", :size => "50", :type => "text", :value => ""}/
+              %input.form-control.input-lg{:name => "url_opc", :placeholder => "Introduce la abreviatura aquÌ", :size => "30", :type => "text", :value => ""}/
+              %button.btn.btn-lg.btn-primary{:type => "submit", :value => "Submit"} Estadisticas de la URL
       / /row
     / /container full
     .row
@@ -42,7 +40,7 @@
     .row
       .col-lg-12
         %br/
-        %p.pull-right SYTW 2014. Autores: Rushil Lakhani Lakhani & Ad√°n Rafael L√≥pez Lecuona.  
+        %p.pull-right SYTW 2014. Autores: Rushil Lakhani Lakhani & Ad·n Rafael LÛpez Lecuona.  
         %br/
         %br/
     / script references

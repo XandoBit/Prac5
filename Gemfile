@@ -11,6 +11,7 @@ gem 'omniauth-google-oauth2'
 gem 'omniauth-oauth2' 
 gem 'pry'
 gem 'erubis'
+gem 'chartkick'
 
 
 
