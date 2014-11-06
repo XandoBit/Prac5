@@ -67,6 +67,7 @@ end
 
 get '/auth/:name/callback' do
         session[:auth] = @auth = request.env['omniauth.auth']
+	#session[:name] = @auth['info'].first_name + " " + @auth['info'].last_name
 	session[:email] = @auth['info'].email
         if session[:auth] then  #@auth
         begin
@@ -79,6 +80,8 @@ get '/auth/:name/callback' do
         end
 
 end
+
+
 
 get '/exit' do
   session.clear
@@ -125,3 +128,16 @@ end
 
 
 error do haml :index end
+
+
+def get_remote_ip(env)
+  puts "request.url = #{request.url}"
+  puts "request.ip = #{request.ip}"
+  if addr = env['HTTP_X_FORWARDED_FOR']
+    puts "env['HTTP_X_FORWARDED_FOR'] = #{addr}"
+    addr.split(',').first.strip
+  else
+    puts "env['REMOTE_ADDR'] = #{env['REMOTE_ADDR']}"
+    env['REMOTE_ADDR']
+  end
+end
