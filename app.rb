@@ -9,7 +9,7 @@ require 'pp'
 require 'data_mapper'
 require 'omniauth-oauth2'      
 require 'omniauth-google-oauth2'
-#require 'chartkick'
+require 'chartkick'
 
 %w( dm-core dm-timestamps dm-types restclient xmlsimple).each  { |lib| require lib}
 
@@ -53,7 +53,14 @@ get '/' do
 	puts "inside get '/': #{params}"
 	session[:email] = " "
 	@list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => " ")  #listar url generales,las que no estan identificadas         
-	haml :index
+	#haml :index
+        puts ""
+        #puts "IP de la peticion #{request.ip}"
+        puts "IP de la peticion #{env['REMOTE_ADDR']}"
+        puts get_remote_ip(env)
+        puts ""
+        haml :index
+  en
 end
 
 

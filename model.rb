@@ -1,3 +1,9 @@
+require 'dm-core'
+require 'dm-migrations'
+require 'restclient'
+require 'xmlsimple'
+require 'dm-timestamps'
+
 class ShortenedUrl
   include DataMapper::Resource
  
@@ -6,8 +12,8 @@ class ShortenedUrl
    property :url_opc, Text
    property :usuario, Text
    property :email, Text
-   property :created_at, DataTime
-   property :n_visits
+   property :created_at, DateTime
+   property :n_visits, Integer
  
    has n, :visits
 end
@@ -25,12 +31,12 @@ class Visit
   belongs_to  :shortened_url
 
   before :create, :set_country
-end
-
-
-  def set_country
+  
+    def set_country
     xml = RestClient.get "http://api.hostip.info/get_xml.php?ip=#{ip}"
     self.country = XmlSimple.xml_in(xml.to_s, { 'ForceArray' => false })['CountryName'].to_s
     self.save
   end
+end
+
 #end
