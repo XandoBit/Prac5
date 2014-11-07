@@ -30,11 +30,11 @@ class Visit
   property :city, String
   property :latitud, String
   property :longitud, String
-  #belongs_to  :link
+
   
   belongs_to  :shortened_url
   
-end  
+end
 
 =begin
   before :create, :set_country
