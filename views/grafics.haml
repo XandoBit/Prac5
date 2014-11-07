@@ -1,21 +1,17 @@
-%table.table
-  %tr                          
-    %th
-      %h1 Información
-  %tr
-    %th
-      URL
-    %th
-      SHORTURL
-    %th
-      Nº VISITAS
-  %tr
-    %th
-      #{@list.url}
-    %th
-      #{@list.url_opc}
-    %th
-      #{@list.n_visits}
-
-
-
+!!!
+%html{:lang => "es"}
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "content-type"}/
+    %meta{:charset => "utf-8"}/
+    %title SYTW URLs
+    %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}/
+    %link{:href => "/css/bootstrap.min.css", :rel => "stylesheet"}/
+    %link{:href => "/css/estilos.css", :rel => "stylesheet"}/
+    
+  %body
+    .tab-content 
+      %p= @country
+      %p Cargandooooooooooo
+      = pie_chart @country
+      = column_chart @ciudad , height: "500px", width: "900px"
+      = geo_chart @country 
