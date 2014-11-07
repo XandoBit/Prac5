@@ -139,14 +139,42 @@ get '/est' do
 end
 
 get '/grafics/:shortened' do
+
+	@country = Hash.new
+	@ciudad  = Hash.new	
 	
-	haml :grafics
+	p "parametro estadistica"
+	p params[:shortened]
+	url = ShortenedUrl.first(:id => params[:shortened].to_i(Base)) 
+	@list = ShortenedUrl.first(:url_opc => url.url_opc)  #para sacar los datos del url corto
+	p "URL que coge"
+	p url
+	
+
+	visit = Visit.all(:shortened_url => url)  #datos guardados en tabla visit de ese url corto
+        
+	#guardamos en el hash las veces que aparece ese pais,ciudad
+
+	visit.each { |visit|
+        	if(@country[visit.country].nil? == true)
+			@country[visit.country] = 1
+		else
+			@country[visit.country] +=1
+		end
+		
+		if(@ciudad[visit.city].nil? == true)
+			@ciudad[visit.city] = 1
+		else
+			@ciudad[visit.city] +=1
+		end
+	}
+
+	haml :grafics, :layout => false
 end
 
 get '/:shortened' do
   puts "inside get '/:shortened': #{params}"
   puts "Los parametros son: #{params[:shortened]}"
-  #if (params[:shortened] == '' || params[:shortened].nil?)
     short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base))
     short_url_opc = ShortenedUrl.first(:url_opc => params[:shortened])
     
@@ -157,6 +185,7 @@ get '/:shortened' do
 	visit = Visit.new(:ip => data['ip'], :country => data['countryName'], :countryCode => data['countryCode'], :city => data["city"],:latitud => data["latitude"], :longitud => data["longitude"], :shortened_url => short_url_opc, :created_at => Time.now)
 	visit.save
         redirect short_url_opc.url, 301
+=begin
   else
 	short_url.n_visits += 1  #incrementamos una visita
 	short_url.save
@@ -165,47 +194,15 @@ get '/:shortened' do
 	visit.save
         redirect short_url.url, 301
   end
-
-end
-
-
-
-
-=begin
-get '/:shortened' do
-  puts "inside get '/:shortened': #{params}"
-  short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base))
-  short_url_opc = ShortenedUrl.first(:url_opc => params[:shortened])
-
-  # HTTP status codes that start with 3 (such as 301, 302) tell the
-  # browser to go look for that resource in another location. This is
-  # used in the case where a web page has moved to another location or
-  # is no longer at the original location. The two most commonly used
-  # redirection status codes are 301 Move Permanently and 302 Found.
-if  short_url_opc
-	short_url_opc.n_visits += 1  #incrementamos una visita
-  	short_url_opc.save
-	data = get_data
-	visit = Visit.new(:ip => data['ip'], :country => data['countryName'], :countryCode => data['countryCode'], :city => data["city"],:latitud => data["latitude"], :longitud => data["longitude"], :shortened_url => short_url_opc, :created_at => Time.now)
-	visit.save
-        redirect  short_url_opc.url, 301
-  else
-	short_url.n_visits += 1  #incrementamos una visita
-	short_url.save
-	data = get_data
-	visit = Visit.new(:ip => data['ip'], :country => data['countryName'], :countryCode => data['countryCode'], :city => data["city"],:latitud => data["latitude"], :longitud => data["longitude"], :shortened_url => short_url, :created_at => Time.now)	
-	visit.save
-        redirect short_url.url, 301
-  end
-
-end
 =end
+  end	
+end
 
 
 def get_geo
-    xml = RestClient.get "http://freegeoip.net/xml/#{get_remote_ip(env)}"
+    xml = RestClient.get "http://ip.pycox.com/xml/#{get_remote_ip(env)}"
     data = XmlSimple.xml_in(xml.to_s)
-    {"ip" => data['Ip'][0].to_s, "countryCode" => data['CountryCode'][0].to_s, "countryName" => data['CountryName'][0].to_s, "city" => data['City'][0].to_s, "latitude" => data['Latitude'][0].to_s, "longitude" => data['Longitude'][0].to_s}
+     {"ip" => data['q'][0].to_s, "countryCode" => data['country_code3'][0].to_s, "countryName" => data['country_name'][0].to_s, "city" => data['city'][0].to_s, "latitude" => data['latitude'][0].to_s, "longitude" => data['longitude'][0].to_s}
 end
 
 
