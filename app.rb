@@ -4,14 +4,20 @@ require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'haml'
 require 'uri'
-require 'pp'
-#require 'socket'
 require 'data_mapper'
 require 'omniauth-oauth2'      
 require 'omniauth-google-oauth2'
+require 'pry'
+require 'erubis'               
+require 'pp'
 require 'chartkick'
+require 'xmlsimple'
+require 'restclient'
+require 'dm-timestamps'
+require 'dm-core'
+require 'dm-types'
 
-%w( dm-core dm-timestamps dm-types restclient xmlsimple).each  { |lib| require lib}
+#%w( dm-core dm-timestamps dm-types restclient xmlsimple).each  { |lib| require lib}
 
 
 configure :development, :test do
@@ -64,6 +70,7 @@ end
 
 
 
+
 get '/auth/:name/callback' do
         session[:auth] = @auth = request.env['omniauth.auth']
 	session[:name] = @auth['info'].first_name + " " + @auth['info'].last_name
@@ -92,29 +99,15 @@ get '/exit' do
   redirect '/'
 end
 
-#Get para visitar una URL corta
-
-get '/visitar/:shortened' do
-    puts "inside get '/:shortened': #{params}"
-    short_url = Shortenedurl.first(:urlshort => params[:shortened])
-    short_url.n_visits += 1
-    short_url.save
-    data = get_geo
-    visit = Visit.new(:ip => data['ip'], :country => data['countryName'], :countryCode => data['countryCode'], :city => data["city"], :latitude => data["latitude"], :longitude => data["longitude"], :shortenedurl => short_url, :created_at => Time.now)
-    visit.save
-    redirect short_url.url, 301
-end
-
-
 
 post '/' do
   uri = URI::parse(params[:url])
   if uri.is_a? URI::HTTP or uri.is_a? URI::HTTPS then
     begin
       if params[:url_opc] == ""
-        @short_url = ShortenedUrl.first_or_create(:url => params[:url], :url_opc => params[:url_opc], :usuario => session[:email])
+        @short_url = ShortenedUrl.first_or_create(:url => params[:url], :url_opc => params[:url_opc], :usuario => session[:email], :n_visits => 0)
       else
-        @short_url_opc = ShortenedUrl.first_or_create(:url => params[:url], :url_opc => params[:url_opc], :usuario => session[:email])
+        @short_url_opc = ShortenedUrl.first_or_create(:url => params[:url], :url_opc => params[:url_opc], :usuario => session[:email], :n_visits => 0)
       end
     rescue Exception => e
       puts "EXCEPTION!"
@@ -128,55 +121,92 @@ post '/' do
 end
 
 
+
+=begin
+get '/estadisticas/:id' do
+  
+  haml :estadisticas, :layout => false
+
+end
+=end
+get '/est' do
+        if session[:auth]
+                @list = ShortenedUrl.all(:order => [ :n_visits.desc ], :limit => 20, :usuario=> session[:email])   #listar url del usuario            
+        else
+                @list = ShortenedUrl.all(:order => [ :id.asc ], :limit => 20, :usuario => " ")  #listar url generales,las que no estan identificada    s
+        end
+        haml :est
+end
+
+get '/grafics/:shortened' do
+	
+	haml :grafics
+end
+
+get '/:shortened' do
+  puts "inside get '/:shortened': #{params}"
+  puts "Los parametros son: #{params[:shortened]}"
+  #if (params[:shortened] == '' || params[:shortened].nil?)
+    short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base))
+    short_url_opc = ShortenedUrl.first(:url_opc => params[:shortened])
+    
+  if short_url_opc
+	short_url_opc.n_visits += 1  #incrementamos una visita
+  	short_url_opc.save
+	data = get_geo
+	visit = Visit.new(:ip => data['ip'], :country => data['countryName'], :countryCode => data['countryCode'], :city => data["city"],:latitud => data["latitude"], :longitud => data["longitude"], :shortened_url => short_url_opc, :created_at => Time.now)
+	visit.save
+        redirect short_url_opc.url, 301
+  else
+	short_url.n_visits += 1  #incrementamos una visita
+	short_url.save
+	data = get_geo
+	visit = Visit.new(:ip => data['ip'], :country => data['countryName'], :countryCode => data['countryCode'], :city => data["city"],:latitud => data["latitude"], :longitud => data["longitude"], :shortened_url => short_url, :created_at => Time.now)	
+	visit.save
+        redirect short_url.url, 301
+  end
+
+end
+
+
+
+
 =begin
 get '/:shortened' do
-  short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base), :usuario => session[:email])
+  puts "inside get '/:shortened': #{params}"
+  short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base))
   short_url_opc = ShortenedUrl.first(:url_opc => params[:shortened])
 
-  if short_url_opc  #Si tiene información, entonces devolvera la url corta
-    redirect short_url_opc.url, 301
+  # HTTP status codes that start with 3 (such as 301, 302) tell the
+  # browser to go look for that resource in another location. This is
+  # used in the case where a web page has moved to another location or
+  # is no longer at the original location. The two most commonly used
+  # redirection status codes are 301 Move Permanently and 302 Found.
+if  short_url_opc
+	short_url_opc.n_visits += 1  #incrementamos una visita
+  	short_url_opc.save
+	data = get_data
+	visit = Visit.new(:ip => data['ip'], :country => data['countryName'], :countryCode => data['countryCode'], :city => data["city"],:latitud => data["latitude"], :longitud => data["longitude"], :shortened_url => short_url_opc, :created_at => Time.now)
+	visit.save
+        redirect  short_url_opc.url, 301
   else
-    redirect short_url.url, 301
+	short_url.n_visits += 1  #incrementamos una visita
+	short_url.save
+	data = get_data
+	visit = Visit.new(:ip => data['ip'], :country => data['countryName'], :countryCode => data['countryCode'], :city => data["city"],:latitud => data["latitude"], :longitud => data["longitude"], :shortened_url => short_url, :created_at => Time.now)	
+	visit.save
+        redirect short_url.url, 301
   end
+
 end
 =end
 
-get '/:shortened' do
-    #@peticion = request.ip
-    puts ""
-    puts "inside get '/:shortened': #{params}"
-    puts ""
-    puts "IP de la peticion #{@peticion}"
-    puts ""
-    short_url = ShortenedUrl.first(:id => params[:shortened].to_i(Base))
-    short_url_opc = ShortenedUrl.first(:url_opc => params[:shortened])
-    #visitas = Visit.first_or_create(:ip => get_remote_ip(env), :created_at => Time.now)
-    begin
-      #visitas = Visit.first_or_create(:ip => get_remote_ip(env), :created_at => Time.now)
-      visitas = Visit.new(:ip => get_remote_ip(env), :created_at => Time.now, :shortened_url => short_url)
-      visitas.save
-      rescue Exception => e
-      puts "EXCEPTION EN LA TABLA VISIT !!!!!!!!!!!!!!!!!!!"
-      pp @short_url
-      puts e.message
-     end
-    
-    if short_url_opc then 
-      redirect short_url_opc.url, 301
-    else
-      # HTTP status codes that start with 3 (such as 301, 302) tell the
-      # browser to go look for that resource in another location. This is
-      # used in the case where a web page has moved to another location or
-      # is no longer at the original location. The two most commonly used
-      # redirection status codes are 301 Move Permanently and 302 Found.
-      redirect short_url.url, 301
-    end
+
+def get_geo
+    xml = RestClient.get "http://freegeoip.net/xml/#{get_remote_ip(env)}"
+    data = XmlSimple.xml_in(xml.to_s)
+    {"ip" => data['Ip'][0].to_s, "countryCode" => data['CountryCode'][0].to_s, "countryName" => data['CountryName'][0].to_s, "city" => data['City'][0].to_s, "latitude" => data['Latitude'][0].to_s, "longitude" => data['Longitude'][0].to_s}
 end
-
-
-
-
-error do haml :index end
 
 
 def get_remote_ip(env)
@@ -189,12 +219,5 @@ def get_remote_ip(env)
     puts "env['REMOTE_ADDR'] = #{env['REMOTE_ADDR']}"
     env['REMOTE_ADDR']
   end
-end
-
-def get_geo
-    xml = RestClient.get "http://freegeoip.net/xml/#{get_remote_ip(env)}"
-    data = XmlSimple.xml_in(xml.to_s)
-    {"ip" => data['Ip'][0].to_s, "countryCode" => data['CountryCode'][0].to_s, "countryName" => data['CountryName'][0].to_s, "city" => data['City'][0].to_s, "latitude" => data['Latitude'][0].to_s, "longitude" => data['Longitude'][0].to_s}
-end
-
-
+end  
+error do haml :index end
