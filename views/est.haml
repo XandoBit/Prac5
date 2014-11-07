@@ -1,0 +1,27 @@
+%table.table
+  %tr
+    %th
+      URL Corta
+    %th
+      Visitas
+    %th
+      Autor
+    %th
+      Estadísticas
+  - @list.each do |elem|
+    %tr
+      %td
+        - if elem.url_opc != " "
+          %a{:href=>"/#{elem.url_opc}"} #{elem.id.to_s(Base)} #{elem.url_opc}
+        - else
+          %a{:href=>"/#{elem.id.to_s(Base)}"} #{elem.url}
+      %td
+        #{elem.n_visits}
+      %td
+        - if elem.usuario != " "
+          #{elem.usuario}
+        - else
+          PUBLICA
+      %td
+        %a{:href=>"/grafics/#{elem.id.to_s(Base)}", :title => "Estadísticas detalladas"} VER
+          
