@@ -4,6 +4,7 @@
       %th URL
       %th Original
       %th Corta
+      %th estadisticas
   %tbody
     - @list.each do |url|
       %tr
@@ -12,3 +13,4 @@
           %a{:href=>"/#{url.id.to_s(Base)}" , :target=>"_blank"} #{url.url}
         %td 
           %a{:href=>"/#{url.url_opc}", :target=>"_blank"} #{url.url_opc}
+	
