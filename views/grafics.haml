@@ -1,48 +1,17 @@
-!!!
-%html{:lang => "es"}
-  %head
-    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "content-type"}/
-    %meta{:charset => "utf-8"}/
-    %title SYTW URLs
-    %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}/
-    %link{:href => "/css/bootstrap.min.css", :rel => "stylesheet"}/
-    /[if lt IE 9]
-      <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    %link{:href => "/css/estilos.css", :rel => "stylesheet"}/
-  %body
-    .cabecera
-	  %a.button.btn.btn-danger{:href=>'/exit', :type => "button"} Salir  
-      .col-lg-11
-	    %a.button.btn.btn-danger{:href=>'/', :type => "button"} Inicio
-		%a.button.btn.btn-danger{:href=>'/grafics', :type => "button"} Graficos estadisticos
-        %button.navbar-toggle.collapsed{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
-        %a{:alt => "GoogleOauth", :href => "/auth/google_oauth2"}
-          %img{:alt => "Sign IN Google", :src => "/img/sign-in-with-google.png", :width => "127"}/
-    .container-full
-      .row
-        .col-lg-12.text-center.v-center
-          %img{:alt => "Acortador URLs", :src => "/img/http.jpg", :width => "800", :height => "150"}/
-          %h1 ERRORRRR malditooo
-          %br/
-          %br/
-          %br/
-          %form.form-inline{:action => "/", :method => "post"}
-            .form-group{:style => "text-align:center;margin:0 auto;"}
-              %label(for="url")
-              %input.form-control.input-lg{:autofocus => "", :name => "url", :placeholder => "Introduce la URL aquí", :size => "50", :type => "text", :value => ""}/
-              %input.form-control.input-lg{:name => "url_opc", :placeholder => "Introduce la abreviatura aquí", :size => "30", :type => "text", :value => ""}/
-              %button.btn.btn-lg.btn-primary{:type => "submit", :value => "Submit"} Estadisticas de la URL
-      / /row
-    / /container full
-    .row
-      .col-md-4.col-md-offset-4.container-down
-        =yield   
-    .row
-      .col-lg-12
-        %br/
-        %p.pull-right SYTW 2014. Autores: Rushil Lakhani Lakhani & Adán Rafael López Lecuona.  
-        %br/
-        %br/
-    / script references
-    %script{:src => "//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"}
-    %script{:src => "../js/bootstrap.min.js"}
+%h1.text-center Graficos estadisticos
+%br
+%ol#mylinks.text-center
+  - if (@list!=nil)
+    - if (@list.length == 0)
+      %p#empty EMPTY LIST
+    - else
+      %h2 #{@url.url}
+      %h4 Visitas por día
+      = column_chart @date
+      = bar_chart @date
+      %h4 Visitas por país
+      = pie_chart @country
+      = geo_chart @country
+%br
+%div.text-center
+  %a.btn.btn-info{:href => "/", :role => "button"} Inicio
