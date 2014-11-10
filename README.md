@@ -17,7 +17,7 @@ Autores: Rushil Lakhani Lakhani & Adán Rafael López Lecuona.
 4. Desarrollamos los tests.
 5. Desarrollamos el diseño de la app.
 6. Subimos la App a Heroku:
-  * [App en Heroku](https://cortaurl.herokuapp.com)
+  * [App en Heroku](https://prac5.herokuapp.com)
 
   
  
