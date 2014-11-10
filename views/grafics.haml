@@ -7,11 +7,40 @@
     %meta{:content => "width=device-width, initial-scale=1, maximum-scale=1", :name => "viewport"}/
     %link{:href => "/css/bootstrap.min.css", :rel => "stylesheet"}/
     %link{:href => "/css/estilos.css", :rel => "stylesheet"}/
+    %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"}
+    %script{:src => "../js/bootstrap.min.js"}
+    %script{:src => "http://www.google.com/jsapi"}
+    %script{:src => "../js/chartkick.js"}
     
   %body
-    .tab-content 
-      %p= @country
-      %p Cargandooooooooooo
-      = pie_chart @country
-      = column_chart @ciudad , height: "500px", width: "900px"
-      = geo_chart @country 
+    .cabecera
+      %a.button.btn.btn-danger{:href=>'/exit', :type => "button"} Salir  
+      .col-lg-11
+        %a.button.btn.btn-danger{:href=>'/', :type => "button"} Inicio
+        %a.button.btn.btn-danger{:href=>'/est', :type => "button"} Graficos estadisticos
+        %button.navbar-toggle.collapsed{"data-target" => ".navbar-collapse", "data-toggle" => "collapse", :type => "button"}
+        %a{:alt => "GoogleOauth", :href => "/auth/google_oauth2"}
+          %img{:alt => "Sign IN Google", :src => "/img/sign-in-with-google.png", :width => "127"}/
+    .container-full
+      .row
+        .col-lg-12.text-center.v-center
+          %h1 Gráficos Estadísticos
+          %h3 GRÁFICO 1
+          = geo_chart @country 
+          %h3 GRÁFICO 2
+          = column_chart @city
+          %h3 GRÁFICO 3
+          = line_chart @city
+          %h3 GRÁFICO 4
+          = pie_chart @country
+          %h3 GRÁFICO 5
+          = area_chart @country
+          %h3 GRÁFICO 6
+          =bar_chart @country  
+      .row
+        .col-lg-12
+          %br/
+          %p.pull-right SYTW 2014. Autores: Rushil Lakhani Lakhani & Adán Rafael López Lecuona.  
+          %br/
+          %br/
+      

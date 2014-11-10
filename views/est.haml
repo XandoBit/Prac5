@@ -1,15 +1,21 @@
 %table.table
   %tr
+    %th Nº URL
+    %th URL Original
     %th
       URL Corta
     %th
-      Visitas
+      Nº Visitas
     %th
       Autor
     %th
       Estadísticas
   - @list.each do |elem|
     %tr
+      %td
+        #{elem.id}
+      %td
+        %a{:href=>"/#{elem.id.to_s(Base)}" , :target=>"_blank"} #{elem.url}
       %td
         - if elem.url_opc != " "
           %a{:href=>"/#{elem.url_opc}"} #{elem.id.to_s(Base)} #{elem.url_opc}
@@ -21,8 +27,9 @@
         - if elem.usuario != " "
           #{elem.usuario}
         - else
-          PUBLICA
+          anonim@
       %td
-        %a{:href=>"/grafics/#{elem.id.to_s(Base)}", :title => "Estadísticas detalladas"} VER
+        %a.button.btn.btn-danger{:href=>"/grafics/#{elem.id.to_s(Base)}", :type => "button"} Ver gráficos estadísticos
+        
 
           

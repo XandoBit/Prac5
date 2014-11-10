@@ -1,10 +1,11 @@
 %table.table.table-hover
   %thead
     %tr
-      %th URL
-      %th Original
-      %th Corta
-      %th estadisticas
+      %th Nº URL
+      %th URL Original
+      %th URL Corta
+      %th Fecha
+      %th Tabla estadistica
   %tbody
     - @list.each do |url|
       %tr
@@ -13,5 +14,8 @@
           %a{:href=>"/#{url.id.to_s(Base)}" , :target=>"_blank"} #{url.url}
         %td 
           %a{:href=>"/#{url.url_opc}", :target=>"_blank"} #{url.url_opc}
+        %td= url.created_at
+        %td 
+          %a.button.btn.btn-danger{:href=>'/est', :type => "button"} Ir
 	
 

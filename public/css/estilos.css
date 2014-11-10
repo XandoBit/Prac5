@@ -1,8 +1,9 @@
 html,body {
   height:100%;
-  background-image:url('/img/fondo.jpg');
+  /*background-image:url('/img/fondo.jpg');*/
+  background-color:#6699FF;
   background-repeat:no-repeat;
-  background-size:1400px 610px;
+  /*background-size:1400px 610px;*/
   
 }
 
@@ -22,12 +23,12 @@ h1 {
   margin: 0 auto;
   width: 100%;
   min-height:20%;
-  background-color:#ffa805;
+  background-color:#66CCFF;
   color:white;
   overflow:hidden;
-  border-radius: 142px 142px 142px 142px;
-  -moz-border-radius: 142px 142px 142px 142px;
-  -webkit-border-radius: 142px 142px 142px 142px;
+  border-radius: 42px 42px 42px 42px;
+  -moz-border-radius: 42px 42px 42px 42px;
+  -webkit-border-radius: 42px 42px 42px 42px;
   border: 10px dotted #000000;
 }
 
@@ -42,8 +43,17 @@ h1 {
 }
 
 .container-down {
-  margin-top:0%;
-  background-color:#ffa805;
-  color:black;
-  }
 
+  background-color:#66CCFF;
+  color:black;
+  margin: 0 auto;
+  width: 100%;
+  min-height:20%;
+  }
+  
+  
+.cabecera {
+  margin-top:0%;
+  background-color:black;
+  color:white;
+  }
